@@ -337,6 +337,8 @@ ngx_http_autoindex_handler(ngx_http_request_t *r)
 
             ngx_cpystrn(last, ngx_de_name(&dir), len + 1);
 
+            #if false
+            // get mtime and size
             if (ngx_de_info(filename, &dir) == NGX_FILE_ERROR) {
                 err = ngx_errno;
 
@@ -358,6 +360,7 @@ ngx_http_autoindex_handler(ngx_http_request_t *r)
                     return ngx_http_autoindex_error(r, &dir, &path);
                 }
             }
+            #endif // #if false
         }
 
         entry = ngx_array_push(&entries);
@@ -374,10 +377,16 @@ ngx_http_autoindex_handler(ngx_http_request_t *r)
 
         ngx_cpystrn(entry->name.data, ngx_de_name(&dir), len + 1);
 
+        /*
         entry->dir = ngx_de_is_dir(&dir);
         entry->file = ngx_de_is_file(&dir);
         entry->mtime = ngx_de_mtime(&dir);
         entry->size = ngx_de_size(&dir);
+        */
+        entry->dir = 0;
+        entry->file = 1;
+        entry->mtime = 0;
+        entry->size = 0;
     }
 
     if (ngx_close_dir(&dir) == NGX_ERROR) {
