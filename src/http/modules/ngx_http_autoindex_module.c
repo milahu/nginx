@@ -314,7 +314,16 @@ ngx_http_autoindex_handler(ngx_http_request_t *r)
 
         len = ngx_de_namelen(&dir);
 
+        // show hidden files
+        /*
         if (ngx_de_name(&dir)[0] == '.') {
+            continue;
+        }
+        */
+        if (
+            ngx_strcmp(ngx_de_name(&dir), ".") == 0 ||
+            ngx_strcmp(ngx_de_name(&dir), "..") == 0
+        ) {
             continue;
         }
 
